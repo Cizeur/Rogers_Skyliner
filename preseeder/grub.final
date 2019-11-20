@@ -1,0 +1,2 @@
+linux    /install.amd/vmlinuz auto=true priority=critical vga=788 --- quiet 
+initrd   /install.amd/gtk/initrd.gz
