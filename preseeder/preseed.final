@@ -20,7 +20,7 @@ d-i netcfg/choose_interface select auto
 # Any hostname and domain names assigned from dhcp take precedence over
 # values set here. However, setting the values still prevents the questions
 # from being shown, even if values come from dhcp.
-d-i netcfg/get_hostname string private-rogers
+d-i netcfg/get_hostname string <HOSTNAME>
 d-i netcfg/get_domain string unassigned-domain
 
 # Disable that annoying WEP key dialog.
@@ -52,11 +52,11 @@ d-i passwd/root-password-again password root
 #d-i passwd/root-password-crypted password [MD5 hash]
 
 # To create a normal user account.
-d-i passwd/user-fullname string Private Rogers
-d-i passwd/username string rogers
+d-i passwd/user-fullname string <USER_FULL_NAME>
+d-i passwd/username string <USER>
 # Normal user's password, either in clear text
-d-i passwd/user-password password rogers
-d-i passwd/user-password-again password rogers
+d-i passwd/user-password password <USER>
+d-i passwd/user-password-again password <USER>
 
 ### Clock and time zone setup
 # Controls whether or not the hardware clock is set to UTC.
@@ -115,7 +115,7 @@ d-i partman-auto/expert_recipe string                        	\
                         use_filesystem{ } filesystem{ ext4 } 	\
                         mountpoint{ /boot } 			\
 		. 						\
-                4201 4201 4201 ext4 				\
+                <MAIN_PARTITION> <MAIN_PARTITION> <MAIN_PARTITION> ext4 				\
                         $primary{ } 				\
                         method{ format } format{ } 		\
                         use_filesystem{ } filesystem{ ext4 } 	\
@@ -165,7 +165,7 @@ tasksel tasksel/first multiselect standard
 #tasksel tasksel/desktop multiselect kde, xfce
 
 # Individual additional packages to install
-d-i pkgsel/include string openssh-server build-essential vim
+d-i pkgsel/include string openssh-server build-essential vim git
 # Whether to upgrade packages after debootstrap.
 # Allowed values: none, safe-upgrade, full-upgrade
 d-i pkgsel/upgrade select full-upgrade
@@ -195,4 +195,7 @@ d-i finish-install/reboot_in_progress note
 
 # This will prevent the installer from ejecting the CD during the reboot,
 # which is useful in some situations.
-d-i cdrom-detect/eject boolean false
+#d-i cdrom-detect/eject boolean false
+
+#Run config script
+d-i preseed/run string postinstall.sh
