@@ -8,9 +8,11 @@
 USER_BASIC=$(eval getent passwd \
 	{$(awk '/^UID_MIN/ {print $2}' /etc/login.defs)..$(awk '/^UID_MAX/ {print $2}' /etc/login.defs)} \
 	| cut -d: -f1| head -n 1)
+SSH_PORT=4242
 STATIC_IP="10.13.254.77/30"
 GATEWAY="$(echo $STATIC_IP | cut -f1,2,3 -d'.').254"
 INTERFACE=$(ip addr show | awk '/inet.*brd/{print $NF; exit}')
+SSH_KEY_LOC="./YOUR_SSH_PUBLIC_KEY"
 
 rm -rf REPLACEMENTS
 mkdir -p REPLACEMENTS
@@ -22,7 +24,32 @@ mkdir -p REPLACEMENTS
 sed -e "s#<INTERFACE>#$INTERFACE#g" ./templates/interfaces.TEMP > ./REPLACEMENTS/interfaces
 sed -i "s#<STATIC_IP>#$STATIC_IP#g" ./REPLACEMENTS/interfaces
 sed -i "s#<GATEWAY>#$GATEWAY#g" ./REPLACEMENTS/interfaces
-mv /etc/network/interfaces /etc/network/interfaces.old
-cp ./REPLACEMENTS/interfaces /etc/network/interfaces
-sudo ifdown $INTERFACE && sudo ifup $INTERFACE
-print $USER_BASIC
+reset_interface () {
+	mv /etc/network/interfaces /etc/network/interfaces.old
+	cp ./REPLACEMENTS/interfaces /etc/network/interfaces
+	ifdown $1 && ifup $1
+}
+#reset_interface $INTERFACE
+
+#######################
+#      SSHD SETUP     #
+#######################
+
+sed -e "s#<SSH_PORT>#$SSH_PORT#g" ./templates/sshd_config.TEMP > ./REPLACEMENTS/sshd_config
+reset_sshd () {
+	mv /etc/sshd/sshd_config /etc/sshd/sshd_config.old
+	cp ./REPLACEMENTS/sshd_config /etc/sshd/sshd_config
+	systemctl restart sshd
+}
+reset_ssh_keys(){
+	USER_SSH_DIR=/home/$USER_BASIC/.ssh
+	rm -rf $USER_SSH_DIR
+	mkdir -p $USER_SSH_DIR
+	chmod 700 $USER_SSH_DIR 
+	for f in $1
+		do
+			cat f >>  /.ssh/authorized_keys
+		done
+}
+#reset_sshd
+#reset_ssh_keys $SSH_KEY_LOC
