@@ -37,8 +37,8 @@ reset_interface () {
 
 sed -e "s#<SSH_PORT>#$SSH_PORT#g" ./templates/sshd_config.TEMP > ./REPLACEMENTS/sshd_config
 reset_sshd () {
-	mv /etc/sshd/sshd_config /etc/sshd/sshd_config.old
-	cp ./REPLACEMENTS/sshd_config /etc/sshd/sshd_config
+	mv /etc/ssh/sshd_config /etc/ssh/sshd_config.old
+	cp ./REPLACEMENTS/sshd_config /etc/ssh/sshd_config
 	systemctl restart sshd
 }
 reset_ssh_keys(){
