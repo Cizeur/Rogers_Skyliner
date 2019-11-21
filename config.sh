@@ -27,10 +27,9 @@ sed -i "s#<GATEWAY>#$GATEWAY#g" ./REPLACEMENTS/interfaces
 reset_interface () {
 	mv /etc/network/interfaces /etc/network/interfaces.old
 	cp ./REPLACEMENTS/interfaces /etc/network/interfaces
-	ifdown $1 && ifup $1
+	ifdown $1 && ifup $INTERFACEy
 }
-#reset_interface $INTERFACE
-
+#reset_interface 
 #######################
 #      SSHD SETUP     #
 #######################
@@ -45,13 +44,14 @@ reset_ssh_keys(){
 	USER_SSH_DIR=/home/$USER_BASIC/.ssh
 	rm -rf $USER_SSH_DIR
 	mkdir -p $USER_SSH_DIR
-	chmod 700 $USER_SSH_DIR 
+	chmod 700 $USER_SSH_DIR
+	chown $USER_BASIC $USER_SSH_DIR	
 	echo $1
-	for keys in $1/*
+	for keys in $INTERFACE/*
 		do
 			echo "HELLO"
 			cat $keys >>  $USER_SSH_DIR/authorized_keys
 		done
 }
 #reset_sshd
-#reset_ssh_keys $SSH_KEY_LOC
+#reset_ssh_keys
