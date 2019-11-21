@@ -22,7 +22,6 @@ apt-get install xorriso
 source config.sh
 ./config.sh
 
-
 ISOFILE=$1
 ISOFILE_FINAL=$ISO_MOD
 ISODIR=debian-iso
@@ -129,5 +128,6 @@ xorriso -as mkisofs \
 ###############
 
 echo "Clean up ..."
-#sudo rm -rf $ISODIR $ISODIR_WRITE $MBR_TEMPLATE
-
+sudo rm -rf $ISODIR 
+sudo rm -rf $MBR_TEMPLATE
+sudo rm -rf $ISODIR_WRITE 
