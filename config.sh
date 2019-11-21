@@ -46,7 +46,7 @@ reset_ssh_keys(){
 	rm -rf $USER_SSH_DIR
 	mkdir -p $USER_SSH_DIR
 	chmod 700 $USER_SSH_DIR 
-	for f in $1
+	for f in $1/*
 		do
 			cat f >>  $USER_SSH_DIR/authorized_keys
 		done
