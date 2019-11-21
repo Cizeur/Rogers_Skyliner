@@ -23,11 +23,10 @@ mkdir -p REPLACEMENTS
 #######################
 
 install_sudo(){
-	login=$1
 	echo "Primary login"
-	echo $login
+	echo $USER_BASIC
 	apt-get install sudo
-	usermod -aG sudo $login
+	usermod -aG sudo $USER_BASIC
 }
 install_sudo
 
