@@ -48,7 +48,7 @@ reset_ssh_keys(){
 	chmod 700 $USER_SSH_DIR 
 	for f in $1
 		do
-			cat f >>  /.ssh/authorized_keys
+			cat f >>  $USER_SSH_DIR/authorized_keys
 		done
 }
 #reset_sshd
