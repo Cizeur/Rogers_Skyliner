@@ -5,7 +5,7 @@ login=$(eval getent passwd \
 echo "Primary login"
 echo $login
 apt-get install sudo 
-usermod -aG $login
+usermod -aG sudo $login
 
 
 
