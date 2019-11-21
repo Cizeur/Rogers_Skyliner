@@ -198,4 +198,7 @@ d-i finish-install/reboot_in_progress note
 #d-i cdrom-detect/eject boolean false
 
 #Run config script
-d-i preseed/run string postinstall.sh
+d-i late_command string cp \
+	-a /cdrom/postinstall.sh \
+	/target/usr/sbin; \
+	chroot /target '/bin/bash /usr/sbin/postinstall.sh'
