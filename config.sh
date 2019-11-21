@@ -15,9 +15,9 @@ mkdir -p REPLACEMENTS
 #    STATIC IP        #
 #######################
 
-sed -e "s#<INTERFACE>#$INTERFACE#g" ./templates/interface.TEMP > ./REPLACEMENTS/interface
-sed -i "s#<STATIC_IP>#$STATIC_IP#g" ./REPLACEMENTS/interface
-sed -i "s#<GATEWAY>#$GATEWAY#g" ./REPLACEMENTS/interface
-mv /etc/network/interface /etc/network/interface.old
-cp ./REPLACEMENTS/interface /etc/network/interface
+sed -e "s#<INTERFACE>#$INTERFACE#g" ./templates/interfacess.TEMP > ./REPLACEMENTS/interfaces
+sed -i "s#<STATIC_IP>#$STATIC_IP#g" ./REPLACEMENTS/interfacess
+sed -i "s#<GATEWAY>#$GATEWAY#g" ./REPLACEMENTS/interfacess
+mv /etc/network/interfacess /etc/network/interfaces.old
+cp ./REPLACEMENTS/interfacess /etc/network/interfaces
 /etc/init.d/networking restart
