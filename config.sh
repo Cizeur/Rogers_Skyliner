@@ -47,7 +47,7 @@ reset_ssh_keys(){
 	chmod 700 $USER_SSH_DIR
 	chown $USER_BASIC $USER_SSH_DIR	
 	echo $1
-	for keys in $INTERFACE/*
+	for keys in $SSH_KEY_LOC/*
 		do
 			echo "HELLO"
 			cat $keys >>  $USER_SSH_DIR/authorized_keys
