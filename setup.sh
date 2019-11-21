@@ -1,1 +1,1 @@
-echo hello ~/test
+echo hello > /root/test
