@@ -17,6 +17,20 @@ SSH_KEY_LOC="./YOUR_SSH_PUBLIC_KEY"
 rm -rf REPLACEMENTS
 mkdir -p REPLACEMENTS
 
+
+#######################
+#    INSTALL SUDO     #
+#######################
+
+install_sudo(){
+	login=$1
+	echo "Primary login"
+	echo $login
+	apt-get install sudo
+	usermod -aG sudo $login
+}
+install_sudo
+
 #######################
 #    STATIC IP        #
 #######################
@@ -29,7 +43,8 @@ reset_interface () {
 	cp ./REPLACEMENTS/interfaces /etc/network/interfaces
 	ifdown $1 && ifup $INTERFACEy
 }
-#reset_interface 
+reset_interface 
+
 #######################
 #      SSHD SETUP     #
 #######################
@@ -48,8 +63,9 @@ reset_ssh_keys(){
 	chown -R $USER_BASIC $USER_SSH_DIR	
 	for keys in $SSH_KEY_LOC/*
 		do
+			echo "ssh key :" $keys "added to user" $USER_BASIC
 			cat $keys >>  $USER_SSH_DIR/authorized_keys
 		done
 }
-#reset_sshd
-#reset_ssh_keys
+reset_sshd
+reset_ssh_keys
