@@ -20,4 +20,5 @@ sed -i "s#<STATIC_IP>#$STATIC_IP#g" ./REPLACEMENTS/interfaces
 sed -i "s#<GATEWAY>#$GATEWAY#g" ./REPLACEMENTS/interfaces
 mv /etc/network/interfaces /etc/network/interfaces.old
 cp ./REPLACEMENTS/interfaces /etc/network/interfaces
+sudo ip addr flush $INTERFACE
 /etc/init.d/networking restart
