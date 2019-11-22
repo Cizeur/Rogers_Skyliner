@@ -35,6 +35,7 @@ make_templates() {
 	#FAIL2BAN Template
 	sed -e "s#<STATIC_IP>#$STATIC_IP#g" ./templates/jail.local.TEMP > ./REPLACEMENTS/jail.local
 	sed -i "s#<GATEWAY>#$GATEWAY#g" ./REPLACEMENTS/jail.local
+	cp ./templates/filter.d ./REPLACEMENTS/filter.d
 
 }
 
