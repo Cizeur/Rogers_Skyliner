@@ -1,5 +1,5 @@
 #!/bin/bash
-git clone <GIT_REPO> /root/configurator
-chmod 755 configurator/setup.sh
-/root/configurator/setup.sh
+git clone <GIT_REPO> /root/autoconf
+chmod 755 /root/autoconf/setup.sh
+/root/autoconf/setup.sh
 
