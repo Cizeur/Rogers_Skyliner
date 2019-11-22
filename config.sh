@@ -80,7 +80,7 @@ install_sudo
 echo "SETTING UP SSHD"
 reset_sshd
 reset_ssh_keys
-echo "RESETTING NETWORK INTERFACE"
+echo "RESETTING NETWORK INTERFACE $INTERFACE"
 reset_interface
 echo "REBOOTING"
 reboot

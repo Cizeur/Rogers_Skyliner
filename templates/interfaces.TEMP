@@ -8,7 +8,7 @@ auto lo
 iface lo inet loopback
 
 # The primary network interface
-allow-hotplug ens33
+allow-hotplug <INTERFACE>
 iface <INTERFACE> inet static
 	address <STATIC_IP>
 	gateway <GATEWAY>
