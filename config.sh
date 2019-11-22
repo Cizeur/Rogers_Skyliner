@@ -103,14 +103,17 @@ firewall_set() {
 	/sbin/ufw allow out 443/tcp
 	/sbin/ufw allow out 80/tcp
 	#DNS
-	/sbin/ufw allow out 53/tcp
+	/sbin/ufw allow out 53/udp
 	#MAIL SERVER
 	/sbin/ufw deny in 25/tcp
 	/sbin/ufw deny out 25/tcp
 	#TIME KEEPING
 	/sbin/ufw allow out 123/udp
 	#BLOCK ICMP
+	cp /etc/ufw/before.rules /etc/ufw/before.rules.old
+	cp /etc/ufw/before6.rules /etc/ufw/before6.rules.old
 	sed -i '/\bicmp\b/ s/\bACCEPT\b/DROP/g' /etc/ufw/before.rules
+	sed -i '/\bicmp\b/ s/\bACCEPT\b/DROP/g' /etc/ufw/before6.rules
 	/sbin/ufw enable
 }
 
