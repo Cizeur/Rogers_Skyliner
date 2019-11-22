@@ -55,11 +55,7 @@ install_sudo(){
 reset_interface () {
 	mv /etc/network/interfaces /etc/network/interfaces.old
 	cp ./REPLACEMENTS/interfaces /etc/network/interfaces
-	sleep 2
-	ifdown $INTERFACE 
-	sleep 2
-	ifup $INTERFACE
-	sleep 2
+	ifdown $INTERFACE && ifup $INTERFACE
 }
 
 #######################
@@ -99,5 +95,7 @@ first_install (){
 	reset_ssh_keys
 	echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
 	reset_interface
+	echo "REBOOTING"
+	/sbin/reboot
 }
 first_install
