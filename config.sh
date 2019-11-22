@@ -86,9 +86,10 @@ reset_ssh_keys(){
 
 firewall_set() {
 	echo "Installing Firewall"
-	apt-get install /sbin/ufw
+	apt-get install ufw
 	echo "Reseting rules"
-	/sbin/ufw reset
+	/sbin/ufw disable
+	/sbin/ufw --force reset
 	echo "Setting rules"
 	/sbin/ufw logging high
 	/sbin/ufw default deny incoming
@@ -108,6 +109,7 @@ firewall_set() {
 	/sbin/ufw deny out 25/tcp
 	#TIME KEEPING
 	/sbin/ufw allow out 123/udp
+	/sbin/ufw enable
 }
 
 
