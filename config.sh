@@ -125,6 +125,8 @@ first_install (){
 	echo "SETTING UP SSHD"
 	reset_sshd
 	reset_ssh_keys
+	echo "SET UP FIREWALL"
+	firewall_set
 	echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
 	reset_interface
 	echo "REBOOTING"
