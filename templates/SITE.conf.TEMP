@@ -1,0 +1,22 @@
+server {
+	listen 80;
+	listen [::]:80;
+	server_name <WEBSITE>;
+	return 301 https://<IP>$request_uri;
+}
+
+
+server {
+	listen 443;
+	listen [::]:443 ssl;
+	root /website/<WEBSITE>;
+	index index.html;
+	server_name <WEBSITE>;
+	location / {
+		try_files $uri $uri/ =404;
+	}
+        ssl                  on;
+        ssl_certificate      /website/ssl/<WEBSITE>.crt;
+        ssl_certificate_key  /website/ssl/<WEBSITE>.key;
+        ssl_ciphers          HIGH:!aNULL:!MD5;
+}
