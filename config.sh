@@ -81,6 +81,38 @@ reset_ssh_keys(){
 }
 
 #######################
+#      FIREWALL       #
+#######################
+
+firewall_set() {
+	echo "Installing Firewall"
+	apt-get install ufw
+	echo "Reseting rules"
+	ufw reset
+	echo "Setting rules"
+	ufw logging high
+	ufw default deny incoming
+	ufw default deny outgoing
+	#SSH
+	ufw limit in $SSH_PORT/tcp
+	ufw allow out $SSH_PORT/tcp
+	#HTTPS
+	ufw allow in 443/tcp
+	ufw allow in 80/tcp
+	ufw allow out 443/tcp
+	ufw allow out 80/tcp
+	#DNS
+	ufw allow out 53/tcp
+	#MAIL SERVER
+	ufw deny in 25/tcp
+	ufw deny out 25/tcp
+	#TIME KEEPING
+	ufw allow out 123/udp
+}
+
+
+
+#######################
 #    FIRST INSTALL    #
 #######################
 
