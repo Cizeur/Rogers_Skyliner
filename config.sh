@@ -156,7 +156,5 @@ first_install (){
 	fail2ban_set
 	echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
 	reset_interface
-#	echo "REBOOTING"
-#	/sbin/reboot
 }
-#first_install
+first_install
