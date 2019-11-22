@@ -9,7 +9,7 @@ cd $SCRIPT_DIR
 #                      #
 ########################
 
-./extra_packages.sh &2>1 > log_packages_install
+./extra_packages.sh  > log_packages_install
 
 refresh () {
 	USER_BASIC=$(eval getent passwd \
@@ -193,4 +193,4 @@ first_install (){
 	echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
 	reset_interface
 }
-#first_install
+first_install
