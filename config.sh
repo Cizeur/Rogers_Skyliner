@@ -80,7 +80,6 @@ install_sudo
 echo "SETTING UP SSHD"
 reset_sshd
 reset_ssh_keys
-echo "RESETTING NETWORK INTERFACE $INTERFACE"
+INTERFACE="$(ip route get 8.8.8.8 | sed -nr 's/.*dev ([^\ ]+).*/\1/p')"
+echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
 reset_interface
-echo "REBOOTING"
-reboot
