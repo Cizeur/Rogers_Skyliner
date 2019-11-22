@@ -134,6 +134,7 @@ fail2ban_set() {
 	cp -r /etc/fail2ban/filter.d /etc/fail2ban/filter.d.old
 	mv ./REPLACEMENTS/filter.d/* /etc/fail2ban/filter.d/
 	echo "Restarting FAIL2BAN"
+	systemctl restart fail2ban.service 
 }
 
 #######################
