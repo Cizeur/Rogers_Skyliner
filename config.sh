@@ -15,11 +15,15 @@ refresh () {
 	USER_BASIC=$(eval getent passwd \
 		{$(awk '/^UID_MIN/ {print $2}' /etc/login.defs)..$(awk '/^UID_MAX/ {print $2}' /etc/login.defs)} \
 		| cut -d: -f1| head -n 1)
-	SSH_PORT=4242
+	
+	INTERFACE="$(ip route get 8.8.8.8 | sed -nr 's/.*dev ([^\ ]+).*/\1/p')"
 	STATIC_IP="10.13.254.77/30"
 	GATEWAY="$(echo $STATIC_IP | cut -f1,2,3 -d'.').254"
-	INTERFACE="$(ip route get 8.8.8.8 | sed -nr 's/.*dev ([^\ ]+).*/\1/p')"
+
 	SSH_KEY_LOC="./YOUR_SSH_PUBLIC_KEY"
+	SSH_PORT=4242
+	IP=$(hostname -I | sed 's/ *$//g')
+	WEBSITE="www.WEBSITE.dev"
 }
 
 make_templates() {
@@ -36,7 +40,9 @@ make_templates() {
 	sed -e "s#<STATIC_IP>#$STATIC_IP#g" ./templates/jail.local.TEMP > ./REPLACEMENTS/jail.local
 	sed -i "s#<GATEWAY>#$GATEWAY#g" ./REPLACEMENTS/jail.local
 	cp -r ./templates/filter.d ./REPLACEMENTS/filter.d
-
+	#NGINX Template
+	sed -e "s#<IP>#$IP#g" ./templates/SITE.conf.TEMP > ./REPLACEMENTS/$WEBSITE.conf
+	sed -i "s#<WEBSITE>#$WEBSITE#g" ./REPLACEMENTS/$WEBSITE.conf
 }
 
 refresh
@@ -137,6 +143,36 @@ fail2ban_set() {
 	systemctl restart fail2ban.service 
 }
 
+
+#######################
+#       NGINX         #
+#######################
+
+nginx_set() {
+	echo 'Adding new website'
+	#addind new and disabling
+	mv /etc/nginx/sites-available/$WEBSITE.conf /etc/nginx/sites-available/$WEBSITE.conf.old	
+	cp ./REPLACEMENTS/$WEBSITE.conf /etc/nginx/sites-available/$WEBSITE.conf
+	ln -s /etc/nginx/sites-available/$WEBSITE.conf /etc/nginx/sites-enabled/$WEBSITE.conf
+
+	echo 'Disabling default'
+	rm /etc/nginx/sites-enabled/default
+
+	echo 'Setting up content'
+	#Set up content
+	mkdir -p /website/$WEBSITE
+	cp -r ./website_content/* /website/$WEBSITE/
+
+	echo 'Adding SSL'
+	#Create SSL
+	./openssl_key_gen.sh $WEBSITE
+	mkdir -p /website/ssl
+	mv -f $WEBSITE.crt $WEBSITE.key /website/ssl/
+
+	echo 'Restarting Nginx'
+	systemctl restart nginx
+}
+
 #######################
 #    FIRST INSTALL    #
 #######################
@@ -157,4 +193,4 @@ first_install (){
 	echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
 	reset_interface
 }
-first_install
+#first_install
