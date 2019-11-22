@@ -1,0 +1,50 @@
+
+####
+#	DEFAULT IGNORED IP
+####
+
+[DEFAULT]
+ignoreip = <STATIC_IP> <GATEWAY>
+
+
+####
+#	FAILED AUTH SSH JAIL
+####
+[sshd] 
+enabled = true 
+port = 4242
+filter = sshd 
+logpath = /var/log/auth.log 
+maxretry = 6 
+action = %(action_mwl)s
+bantime = 600
+
+
+####
+#	DOS PROTECTION
+####
+
+
+[port-scan-dos]
+enabled  = true
+filter   = portscan
+logpath  = /var/log/ufw.log
+action = %(action_mwl)s
+findtime = 600
+maxretry = 6
+bantime = 600
+
+####
+#	DOS PROTECTION
+####
+
+[nginx-dos]
+enabled = true
+port = http,https
+filter = nginx-dos
+logpath = /var/log/nginx/access.log
+bantime = 600
+maxretry = 200
+findtime = 200
+action = %(action_mw)s
+
