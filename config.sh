@@ -45,7 +45,11 @@ sed -i "s#<GATEWAY>#$GATEWAY#g" ./REPLACEMENTS/interfaces
 reset_interface () {
 	mv /etc/network/interfaces /etc/network/interfaces.old
 	cp ./REPLACEMENTS/interfaces /etc/network/interfaces
-	ifdown $INTERFACE && ifup $INTERFACE
+	sleep 2
+	ifdown $INTERFACE 
+	sleep 2
+	ifup $INTERFACE
+	sleep 2
 }
 reset_interface 
 
