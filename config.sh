@@ -190,6 +190,8 @@ first_install (){
 	firewall_set
 	echo "SET UP FAIL2BAN"
 	fail2ban_set
+	echo "SET UP NGINX"
+	nginx_set
 	echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
 	reset_interface
 }
