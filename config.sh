@@ -33,7 +33,6 @@ install_sudo(){
 	apt-get install sudo
 	usermod -aG sudo $USER_BASIC
 }
-install_sudo
 
 #######################
 #    STATIC IP        #
@@ -51,7 +50,6 @@ reset_interface () {
 	ifup $INTERFACE
 	sleep 2
 }
-reset_interface 
 
 #######################
 #      SSHD SETUP     #
@@ -75,5 +73,10 @@ reset_ssh_keys(){
 			cat $keys >>  $USER_SSH_DIR/authorized_keys
 		done
 }
+
+sleep 10
 reset_sshd
 reset_ssh_keys
+install_sudo
+reset_interface
+reboot

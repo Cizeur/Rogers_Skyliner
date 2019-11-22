@@ -9,7 +9,12 @@ if [ ! -f $CRON_FILE ]; then
    touch $CRON_FILE
    /usr/bin/crontab $CRON_FILE
 fi
-croncmd="sleep 10 && $SCRIPT_DIR/config.sh > /root/woooow"
+### LAUNCH CONFIG SCRIPT ON REBOOT ###
+croncmd="$SCRIPT_DIR/config.sh > /root/woooow"
 cronjob="@reboot $croncmd"
 ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
 
+### REMOVE CONFIG SCRIPT FROM CRON ###
+croncmd="crontab -l | grep -v -F "$croncmd" | crontab -"
+cronjob="@reboot $croncmd"
+( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
