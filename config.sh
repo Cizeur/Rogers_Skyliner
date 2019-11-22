@@ -55,7 +55,7 @@ install_sudo(){
 reset_interface () {
 	mv /etc/network/interfaces /etc/network/interfaces.old
 	cp ./REPLACEMENTS/interfaces /etc/network/interfaces
-	ifdown $INTERFACE && ifup $INTERFACE
+	/sbin/ifdown $INTERFACE && /sbin/ifup $INTERFACE
 }
 
 #######################
@@ -86,28 +86,28 @@ reset_ssh_keys(){
 
 firewall_set() {
 	echo "Installing Firewall"
-	apt-get install ufw
+	apt-get install /sbin/ufw
 	echo "Reseting rules"
-	ufw reset
+	/sbin/ufw reset
 	echo "Setting rules"
-	ufw logging high
-	ufw default deny incoming
-	ufw default deny outgoing
+	/sbin/ufw logging high
+	/sbin/ufw default deny incoming
+	/sbin/ufw default deny outgoing
 	#SSH
-	ufw limit in $SSH_PORT/tcp
-	ufw allow out $SSH_PORT/tcp
+	/sbin/ufw limit in $SSH_PORT/tcp
+	/sbin/ufw allow out $SSH_PORT/tcp
 	#HTTPS
-	ufw allow in 443/tcp
-	ufw allow in 80/tcp
-	ufw allow out 443/tcp
-	ufw allow out 80/tcp
+	/sbin/ufw allow in 443/tcp
+	/sbin/ufw allow in 80/tcp
+	/sbin/ufw allow out 443/tcp
+	/sbin/ufw allow out 80/tcp
 	#DNS
-	ufw allow out 53/tcp
+	/sbin/ufw allow out 53/tcp
 	#MAIL SERVER
-	ufw deny in 25/tcp
-	ufw deny out 25/tcp
+	/sbin/ufw deny in 25/tcp
+	/sbin/ufw deny out 25/tcp
 	#TIME KEEPING
-	ufw allow out 123/udp
+	/sbin/ufw allow out 123/udp
 }
 
 
@@ -129,7 +129,7 @@ first_install (){
 	firewall_set
 	echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
 	reset_interface
-	echo "REBOOTING"
-	/sbin/reboot
+#	echo "REBOOTING"
+#	/sbin/reboot
 }
 first_install
