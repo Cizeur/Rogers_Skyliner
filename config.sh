@@ -75,8 +75,8 @@ reset_ssh_keys(){
 }
 
 sleep 10
+install_sudo
 reset_sshd
 reset_ssh_keys
-install_sudo
 reset_interface
 reboot
