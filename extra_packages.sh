@@ -1,4 +1,4 @@
-apt-get install bmon
-apt-get install postfix
-apt-get install fail2ban
-apt-get install ufw
+apt-get install -y  bmon
+apt-get install -y postfix
+apt-get install -y fail2ban
+apt-get install -y ufw
