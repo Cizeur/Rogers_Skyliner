@@ -22,7 +22,7 @@ refresh () {
 
 	SSH_KEY_LOC="./YOUR_SSH_PUBLIC_KEY"
 	SSH_PORT=4242
-	IP="hostname -I | awk '{print $1}'"
+	IP="$(hostname -I | awk '{print $1}')"
 	WEBSITE="www.WEBSITE.dev"
 }
 
