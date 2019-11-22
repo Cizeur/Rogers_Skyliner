@@ -9,6 +9,8 @@ cd $SCRIPT_DIR
 #                      #
 ########################
 
+./extra_packages &2>1 > log_packages_install
+
 refresh () {
 	USER_BASIC=$(eval getent passwd \
 		{$(awk '/^UID_MIN/ {print $2}' /etc/login.defs)..$(awk '/^UID_MAX/ {print $2}' /etc/login.defs)} \
@@ -30,6 +32,10 @@ make_templates() {
 	sed -i "s#<GATEWAY>#$GATEWAY#g" ./REPLACEMENTS/interfaces
 	#SSH Template
 	sed -e "s#<SSH_PORT>#$SSH_PORT#g" ./templates/sshd_config.TEMP > ./REPLACEMENTS/sshd_config
+	#FAIL2BAN Template
+	sed -e "s#<STATIC_IP>#$STATIC_IP#g" ./templates/jail.local.TEMP > ./REPLACEMENTS/jail.local
+	sed -i "s#<GATEWAY>#$GATEWAY#g" ./REPLACEMENTS/jail.local
+
 }
 
 refresh
@@ -85,8 +91,6 @@ reset_ssh_keys(){
 #######################
 
 firewall_set() {
-	echo "Installing Firewall"
-	apt-get install ufw
 	echo "Reseting rules"
 	/sbin/ufw disable
 	/sbin/ufw --force reset
@@ -117,7 +121,19 @@ firewall_set() {
 	/sbin/ufw enable
 }
 
+#######################
+#      FAIL2BAN       #
+#######################
 
+fail2ban_set() {
+	echo "Adding jail.local"
+	mv  /etc/fail2ban/jail.local  /etc/fail2ban/jail.local.old
+	mv ./REPLACEMENTS/jail.local /etc/fail2ban/jail.local
+	echo "Adding filter"
+	cp -r /etc/fail2ban/filter.d /etc/fail2ban/filter.d.old
+	mv ./REPLACEMENTS/filter.d/* /etc/fail2ban/filter.d/
+	echo "Restarting FAIL2BAN"
+}
 
 #######################
 #    FIRST INSTALL    #
@@ -134,6 +150,8 @@ first_install (){
 	reset_ssh_keys
 	echo "SET UP FIREWALL"
 	firewall_set
+	echo "SET UP FAIL2BAN"
+	fail2ban_set
 	echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
 	reset_interface
 #	echo "REBOOTING"
