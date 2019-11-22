@@ -9,18 +9,31 @@ cd $SCRIPT_DIR
 #                      #
 ########################
 
+refresh () {
+	USER_BASIC=$(eval getent passwd \
+		{$(awk '/^UID_MIN/ {print $2}' /etc/login.defs)..$(awk '/^UID_MAX/ {print $2}' /etc/login.defs)} \
+		| cut -d: -f1| head -n 1)
+	SSH_PORT=4242
+	STATIC_IP="10.13.254.77/30"
+	GATEWAY="$(echo $STATIC_IP | cut -f1,2,3 -d'.').254"
+	INTERFACE="$(ip route get 8.8.8.8 | sed -nr 's/.*dev ([^\ ]+).*/\1/p')"
+	SSH_KEY_LOC="./YOUR_SSH_PUBLIC_KEY"
+}
 
-USER_BASIC=$(eval getent passwd \
-	{$(awk '/^UID_MIN/ {print $2}' /etc/login.defs)..$(awk '/^UID_MAX/ {print $2}' /etc/login.defs)} \
-	| cut -d: -f1| head -n 1)
-SSH_PORT=4242
-STATIC_IP="10.13.254.77/30"
-GATEWAY="$(echo $STATIC_IP | cut -f1,2,3 -d'.').254"
-INTERFACE="$(ip route get 8.8.8.8 | sed -nr 's/.*dev ([^\ ]+).*/\1/p')"
-SSH_KEY_LOC="./YOUR_SSH_PUBLIC_KEY"
+make_templates() {
+	#clean up
+	rm -rf REPLACEMENTS
+	mkdir -p REPLACEMENTS
+	#Interface Template
+	sed -e "s#<INTERFACE>#$INTERFACE#g" ./templates/interfaces.TEMP > ./REPLACEMENTS/interfaces
+	sed -i "s#<STATIC_IP>#$STATIC_IP#g" ./REPLACEMENTS/interfaces
+	sed -i "s#<GATEWAY>#$GATEWAY#g" ./REPLACEMENTS/interfaces
+	#SSH Template
+	sed -e "s#<SSH_PORT>#$SSH_PORT#g" ./templates/sshd_config.TEMP > ./REPLACEMENTS/sshd_config
+}
 
-rm -rf REPLACEMENTS
-mkdir -p REPLACEMENTS
+refresh
+make_templates
 
 
 #######################
@@ -38,9 +51,7 @@ install_sudo(){
 #    STATIC IP        #
 #######################
 
-sed -e "s#<INTERFACE>#$INTERFACE#g" ./templates/interfaces.TEMP > ./REPLACEMENTS/interfaces
-sed -i "s#<STATIC_IP>#$STATIC_IP#g" ./REPLACEMENTS/interfaces
-sed -i "s#<GATEWAY>#$GATEWAY#g" ./REPLACEMENTS/interfaces
+
 reset_interface () {
 	mv /etc/network/interfaces /etc/network/interfaces.old
 	cp ./REPLACEMENTS/interfaces /etc/network/interfaces
@@ -55,7 +66,6 @@ reset_interface () {
 #      SSHD SETUP     #
 #######################
 
-sed -e "s#<SSH_PORT>#$SSH_PORT#g" ./templates/sshd_config.TEMP > ./REPLACEMENTS/sshd_config
 reset_sshd () {
 	mv /etc/ssh/sshd_config /etc/ssh/sshd_config.old
 	cp ./REPLACEMENTS/sshd_config /etc/ssh/sshd_config
@@ -74,12 +84,20 @@ reset_ssh_keys(){
 		done
 }
 
-sleep 10
-echo "INSTALLING SUDO"
-install_sudo
-echo "SETTING UP SSHD"
-reset_sshd
-reset_ssh_keys
-INTERFACE="$(ip route get 8.8.8.8 | sed -nr 's/.*dev ([^\ ]+).*/\1/p')"
-echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
-reset_interface
+#######################
+#    FIRST INSTALL    #
+#######################
+
+first_install (){
+	sleep 10
+	refresh
+	make_templates
+	echo "INSTALLING SUDO"
+	install_sudo
+	echo "SETTING UP SSHD"
+	reset_sshd
+	reset_ssh_keys
+	echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
+	reset_interface
+}
+first_install
