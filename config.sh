@@ -109,6 +109,8 @@ firewall_set() {
 	/sbin/ufw deny out 25/tcp
 	#TIME KEEPING
 	/sbin/ufw allow out 123/udp
+	#BLOCK ICMP
+	sed -i '/\bicmp\b/ s/\bACCEPT\b/DROP/g' /etc/ufw/before.rules
 	/sbin/ufw enable
 }
 
