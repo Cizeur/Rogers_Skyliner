@@ -16,7 +16,7 @@ USER_BASIC=$(eval getent passwd \
 SSH_PORT=4242
 STATIC_IP="10.13.254.77/30"
 GATEWAY="$(echo $STATIC_IP | cut -f1,2,3 -d'.').254"
-INTERFACE=$(ip addr show | awk '/inet.*brd/{print $NF; exit}')
+INTERFACE="$(ip route get 8.8.8.8 | sed -nr 's/.*dev ([^\ ]+).*/\1/p')"
 SSH_KEY_LOC="./YOUR_SSH_PUBLIC_KEY"
 
 rm -rf REPLACEMENTS
@@ -75,8 +75,12 @@ reset_ssh_keys(){
 }
 
 sleep 10
+echo "INSTALLING SUDO"
 install_sudo
+echo "SETTING UP SSHD"
 reset_sshd
 reset_ssh_keys
+echo "RESETTING NETWORK INTERFACE"
 reset_interface
+echo "REBOOTING"
 reboot
