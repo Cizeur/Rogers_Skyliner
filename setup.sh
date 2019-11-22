@@ -9,7 +9,7 @@ if [ ! -f $CRON_FILE ]; then
    touch $CRON_FILE
    /usr/bin/crontab $CRON_FILE
 fi
-croncmd="$SCRIPT_DIR/config.sh > /root/woooow"
+croncmd="sleep 10 && $SCRIPT_DIR/config.sh > /root/woooow"
 cronjob="@reboot $croncmd"
 ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
 
