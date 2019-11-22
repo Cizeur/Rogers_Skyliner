@@ -44,7 +44,7 @@ install_sudo(){
 	echo "Primary login"
 	echo $USER_BASIC
 	apt-get install sudo
-	usermod -aG sudo $USER_BASIC
+	/sbin/usermod -aG sudo $USER_BASIC
 }
 
 #######################
