@@ -146,6 +146,10 @@ fail2ban_set() {
 	echo "Adding filter"
 	cp -r /etc/fail2ban/filter.d /etc/fail2ban/filter.d.old
 	mv ./REPLACEMENTS/filter.d/* /etc/fail2ban/filter.d/
+	echo "creating empty logs if missing"
+	touch /var/log/auth.log
+	touch /var/log/ufw.log
+	touch /var/log/nginx/access.log
 	echo "Restarting FAIL2BAN"
 	systemctl restart fail2ban.service 
 }
