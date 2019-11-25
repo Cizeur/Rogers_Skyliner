@@ -213,6 +213,8 @@ first_install (){
 	fail2ban_set
 	echo "SET UP NGINX"
 	nginx_set
+	echo "SET UP CRONTAB"
+	crontab_set
 	echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
 	reset_interface
 }
