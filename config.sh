@@ -10,6 +10,7 @@ cd $SCRIPT_DIR
 ########################
 
 ./extra_packages.sh  >> log_packages_install
+cp -r /root/autoconf/script /script
 
 refresh () {
 	USER_BASIC=$(eval getent passwd \
