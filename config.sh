@@ -48,6 +48,11 @@ make_templates() {
 refresh
 make_templates
 
+################################
+#    REDIRECTING ROOT MAIL     #
+################################
+
+echo "root@localhost, $USER_BASIC@localhost" > /root/.forward
 
 #######################
 #    INSTALL SUDO     #
@@ -157,7 +162,7 @@ add_to_cron() {
 crontab_set(){
 	add_to_cron "0 4 * * 2" "/script/update.sh | tee -a  /var/log/update_script.log 2>&1"
 	add_to_cron "0 4 * * 5" "/script/manlog.sh"
-	add_to_cron "0 0 * * *" "/script/change_monitor.sh /etc/crontab /script/root"
+	add_to_cron "0 0 * * *" "/script/change_monitor.sh"
 }
 
 #######################
