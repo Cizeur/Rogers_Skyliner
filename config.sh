@@ -169,6 +169,28 @@ crontab_set(){
 }
 
 #######################
+# 	SERVICES      #
+#######################
+
+#Checked with systemctl list-unit-files | grep enabled
+## auto_vt || getty  needed to have a terminal on the vm side
+## syslog provide needed for rsyslog
+## rsyslog manages /var/logs files
+## procps contain process commands  kill, pkill, ps sysctl,  top, uptime for example
+
+service_disable(){
+	sudo systemctl mask apparmor
+	sudo systemctl mask systemd-fsck-root.service
+	sudo systemctl mask dbus.service
+	sudo systemctl mask kmod
+	sudo systemctl mask udev
+	sudo systemctl mask apt-daily-upgrade.timer 
+	sudo systemctl mask apt-daily.timer
+	sudo systemctl masklogrotate.timer  
+	sudo systemctl mask man-db.timer 
+}
+
+#######################
 #       NGINX         #
 #######################
 
@@ -220,7 +242,10 @@ first_install (){
 	nginx_set
 	echo "SET UP CRONTAB"
 	crontab_set
+	echo "DISABLING SERVICES"
+	service_disable	
 	echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
 	reset_interface
+	reboot
 }
 first_install
