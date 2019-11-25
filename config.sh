@@ -104,6 +104,7 @@ reset_ssh_keys(){
 #######################
 
 firewall_set() {
+	systemctl restart ufw
 	echo "Reseting rules"
 	/sbin/ufw disable
 	/sbin/ufw --force reset
@@ -180,14 +181,14 @@ crontab_set(){
 ## dbus needed for systemctl 
 
 service_disable(){
-	sudo systemctl mask apparmor
-	sudo systemctl mask systemd-fsck-root.service
-	sudo systemctl mask kmod
-	sudo systemctl mask udev
-	sudo systemctl mask apt-daily-upgrade.timer 
-	sudo systemctl mask apt-daily.timer
-	sudo systemctl mask logrotate.timer  
-	sudo systemctl mask man-db.timer 
+	systemctl mask apparmor
+	systemctl mask systemd-fsck-root.service
+	systemctl mask kmod
+	systemctl mask udev
+	systemctl mask apt-daily-upgrade.timer 
+	systemctl mask apt-daily.timer
+	systemctl mask logrotate.timer  
+	systemctl mask man-db.timer 
 }
 
 #######################
