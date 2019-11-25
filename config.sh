@@ -229,14 +229,14 @@ countdown() {
   msg=$2
   while [ $secs -gt 0 ]
   do
-    printf "\r\033$msg %.d seconds" $((secs--))
+    printf "\r\033 $msg %.d seconds" $((secs--))
     sleep 1
   done
   echo
 }
 
 first_install (){
-	countdown 20 "This is a VIOLENT script if unaware of it's action press Ctrl-C you have"
+	countdown "20" "This is a VIOLENT script if unaware of it's action press Ctrl-C you have"
 	echo "STARTING"
 	refresh
 	make_templates
