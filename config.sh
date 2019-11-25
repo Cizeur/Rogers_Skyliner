@@ -226,17 +226,17 @@ nginx_set() {
 countdown() {
   secs=$1
   shift
-  msg=$2
+  MSG=$2
   while [ $secs -gt 0 ]
   do
-    printf "\r\033 $msg %.d seconds" $((secs--))
+    printf "\rThis is a VIOLENT script if unaware of it's action press Ctrl-C you have %.d seconds" $((secs--))
     sleep 1
   done
   echo
 }
 
 first_install (){
-	countdown "20" "This is a VIOLENT script if unaware of it's action press Ctrl-C you have"
+	countdown "20" 
 	echo "STARTING"
 	refresh
 	make_templates
