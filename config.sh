@@ -9,7 +9,7 @@ cd $SCRIPT_DIR
 #                      #
 ########################
 
-./extra_packages.sh  > log_packages_install
+./extra_packages.sh  >> log_packages_install
 
 refresh () {
 	USER_BASIC=$(eval getent passwd \
