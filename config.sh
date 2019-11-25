@@ -223,9 +223,20 @@ nginx_set() {
 #    FIRST INSTALL    #
 #######################
 
+countdown() {
+  secs=$1
+  shift
+  msg=$2
+  while [ $secs -gt 0 ]
+  do
+    printf "\r\033$msg %.d seconds" $((secs--))
+    sleep 1
+  done
+  echo
+}
+
 first_install (){
-	echo "This is a VIOLENT script if unaware of it's action press Ctrl-C you have 20 sec"
-	sleep 20
+	countdown 20 "This is a VIOLENT script if unaware of it's action press Ctrl-C you have"
 	echo "STARTING"
 	refresh
 	make_templates
@@ -246,6 +257,5 @@ first_install (){
 	service_disable	
 	echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
 	reset_interface
-	reboot
 }
 first_install
