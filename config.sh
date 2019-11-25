@@ -200,7 +200,9 @@ nginx_set() {
 #######################
 
 first_install (){
-	sleep 10
+	echo "This is a VIOLENT script if unaware of it's action press Ctrl-C you have 20 sec"
+	sleep 20
+	echo "STARTING"
 	refresh
 	make_templates
 	echo "INSTALLING SUDO"
