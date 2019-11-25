@@ -186,7 +186,7 @@ service_disable(){
 	sudo systemctl mask udev
 	sudo systemctl mask apt-daily-upgrade.timer 
 	sudo systemctl mask apt-daily.timer
-	sudo systemctl masklogrotate.timer  
+	sudo systemctl mask logrotate.timer  
 	sudo systemctl mask man-db.timer 
 }
 
