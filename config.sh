@@ -156,7 +156,7 @@ fail2ban_set() {
 add_to_cron() {	
 	croncmd=$2
 	cronjob="$1 $croncmd"
-	( crontab -l; echo "$cronjob" ) | crontab -
+	( crontab -l | grep -v -F "$cronjob" ; echo "$cronjob" ) | crontab -
 	systemctl restart cron.service
 }
 
