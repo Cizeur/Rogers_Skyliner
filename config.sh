@@ -156,12 +156,14 @@ fail2ban_set() {
 add_to_cron() {	
 	croncmd=$2
 	cronjob="$1 $croncmd"
-	( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
+	( crontab -l; echo "$cronjob" ) | crontab -
 	systemctl restart cron.service
 }
 
 crontab_set(){
+	crontab -r
 	add_to_cron "0 4 * * 2" "/script/update.sh | tee -a  /var/log/update_script.log 2>&1"
+	add_to_cron "@reboot" "/script/update.sh | tee -a  /var/log/update_script.log 2>&1"
 	add_to_cron "0 4 * * 5" "/script/manlog.sh"
 	add_to_cron "0 0 * * *" "/script/change_monitor.sh"
 }
