@@ -329,6 +329,12 @@ case $1 in
 		echo $STATIC_IP
 		change_ip
 		;;
+	deploy)
+		git pull
+		make_templates
+		echo "SET UP NGINX"
+		nginx_set
+		;;
 	*)
 		usage
 		exit
