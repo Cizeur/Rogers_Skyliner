@@ -25,7 +25,6 @@ refresh () {
 }
 
 make_templates() {
-	refresh
 	#clean up
 	rm -rf REPLACEMENTS
 	mkdir -p REPLACEMENTS
@@ -247,6 +246,7 @@ countdown() {
 first_install (){
 	countdown "20" 
 	echo "STARTING"
+	refresh
 	make_templates
 	echo "REDIRECTING ROOT EMAIL TO $USER_BASIC"
 	mail_redirect
@@ -295,7 +295,6 @@ change_ip() {
 ./extra_packages.sh  >> log_packages_install
 rm -rf /script
 cp -r /root/autoconf/script /script
-make_templates
 
 function usage() {
 	printf "\n\n CONFIGURATOR PROGRAM FOR THE VM \n\n"
@@ -313,7 +312,10 @@ case $1 in
 		first_install
 		;;
 	change_ip)
+		refresh
 		STATIC_IP=$2
+		GATEWAY="$(echo $STATIC_IP | cut -f1,2,3 -d'.').254"
+		make_templates
 		if [ -z "$2" ]
   		then
     			echo "missing ip"
