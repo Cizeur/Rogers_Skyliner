@@ -308,12 +308,10 @@ cp -r /root/autoconf/script /script
 
 function usage() {
 	printf "\n\n CONFIGURATOR PROGRAM FOR THE VM \n\n"
-	printf "Lemin map folder generator-tester\n\
-	- till n maps\n\
-	- in a folder of map (-m)\n\
-	- with generator (-g)\n\
-	- with generator options (-o)\n\
-	- !!!-e for generator careful -m [map_folder] erased\n"
+	printf "\tsite_conf first_install                : set up vm after install\n"
+	printf "\tsite_conf change_ip [IP with mask]     : to change IP\n"
+	printf "\tsite_conf deploy                       : redeploy Website\n"
+
 }
 
 
@@ -333,6 +331,7 @@ case $1 in
 		fi
 		echo $STATIC_IP
 		change_ip
+		exit 0
 		;;
 	deploy)
 		git pull
@@ -340,6 +339,7 @@ case $1 in
 		make_templates
 		echo "SET UP NGINX"
 		nginx_set
+		exit 0
 		;;
 	*)
 		usage
