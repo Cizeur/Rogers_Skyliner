@@ -250,6 +250,7 @@ first_install (){
 	install_sudo	
 	echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
 	reset_interface
+	IP="$(hostname -I | awk '{print $1}')"
 	echo "DISABLING SERVICES"
 	service_disable	
 	echo "SETTING UP SSHD"
