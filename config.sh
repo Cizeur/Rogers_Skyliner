@@ -18,7 +18,7 @@ refresh () {
 		| cut -d: -f1| head -n 1)
 	
 	INTERFACE="$(ip route get 8.8.8.8 | sed -nr 's/.*dev ([^\ ]+).*/\1/p')"
-	STATIC_IP="10.13.254.77/30"
+	STATIC_IP="10.12.254.77/30"
 	GATEWAY="$(echo $STATIC_IP | cut -f1,2,3 -d'.').254"
 
 	SSH_KEY_LOC="./YOUR_SSH_PUBLIC_KEY"
@@ -189,6 +189,7 @@ service_disable(){
 	systemctl mask systemd-fsck-root.service
 	systemctl mask kmod
 	systemctl mask udev
+	systemctl mask dbus.service
 	systemctl mask apt-daily-upgrade.timer 
 	systemctl mask apt-daily.timer
 	systemctl mask logrotate.timer  
