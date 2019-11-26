@@ -309,7 +309,7 @@ function usage() {
 	printf "\n CONFIGURATOR PROGRAM FOR THE VM \n\n"
 	printf "\tsite_conf first_install                : set up vm after install\n"
 	printf "\tsite_conf change_ip [IP with mask]     : to change IP\n"
-	printf "\tsite_conf deploy                       : redeploy Website\n"
+	printf "\tsite_conf deploy                       : redeploy Website\n\n"
 
 }
 
