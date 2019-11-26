@@ -213,6 +213,7 @@ nginx_set() {
 	echo 'Setting up content'
 	#Set up content
 	mkdir -p /website/$WEBSITE
+	rm -rf /website/$WEBSITE/*
 	cp -r ./website_content/* /website/$WEBSITE/
 
 	echo 'Adding SSL'
