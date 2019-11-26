@@ -259,6 +259,7 @@ first_install (){
 	install_sudo	
 	echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
 	reset_interface
+	refresh
 	make_templates
 	echo "DISABLING SERVICES"
 	service_disable	
@@ -283,7 +284,7 @@ first_install (){
 change_ip() {
 	echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
 	reset_interface
-	IP="$(hostname -I | awk '{print $1}')"
+	refresh
 	make_templates
 	echo "SET UP FAIL2BAN"
 	fail2ban_set
