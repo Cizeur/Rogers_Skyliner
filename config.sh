@@ -293,10 +293,20 @@ change_ip() {
 #    	PROGRAM       #
 #######################
 
-case $OPT in
+function usage() {
+	printf "\n\n CONFIGURATOR PROGRAM FOR THE VM \n\n"
+	printf "Lemin map folder generator-tester\n\
+	- till n maps\n\
+	- in a folder of map (-m)\n\
+	- with generator (-g)\n\
+	- with generator options (-o)\n\
+	- !!!-e for generator careful -m [map_folder] erased\n"
+}
+
+
+case $1 in
 	first_install)
 		first_install
-		exit 0
 		;;
 	change_ip)
 		STATIC_IP=$2
@@ -305,38 +315,7 @@ case $OPT in
     			echo "missing ip"
 			exit 1
 		fi
-
-
-		;;
-	-t)
-		timer=1
-		;;
-	-e)
-		no_gen=0
-		;;
-	-n)
-		shift
-		n_maps=$1
-		;;
-	-p)
-		shift
-		program=$1
-		;;
-	-m)
-		shift
-		map_folder=$1
-		;;
-	-g)
-		shift
-		generator_ex=$1
-		;;
-	-o)
-		shift
-		options=$1
-		;;
-	-po)
-		shift
-		prog_options=$1
+		change_ip
 		;;
 	*)
 		usage
