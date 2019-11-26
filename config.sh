@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root (sudo)" 
+   exit 1
+fi
+
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd $SCRIPT_DIR
 
@@ -15,7 +20,7 @@ refresh () {
 		| cut -d: -f1| head -n 1)
 	
 	INTERFACE="$(ip route get 8.8.8.8 | sed -nr 's/.*dev ([^\ ]+).*/\1/p')"
-	STATIC_IP="10.12.254.77/30"
+	STATIC_IP="10.13.254.77/30"
 	GATEWAY="$(echo $STATIC_IP | cut -f1,2,3 -d'.').254"
 
 	SSH_KEY_LOC="./YOUR_SSH_PUBLIC_KEY"
