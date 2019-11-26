@@ -319,6 +319,7 @@ case $1 in
     			echo "missing ip"
 			exit 1
 		fi
+		echo $STATIC_IP
 		change_ip
 		;;
 	*)
