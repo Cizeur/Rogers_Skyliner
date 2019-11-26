@@ -8,7 +8,6 @@ fi
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 cd $SCRIPT_DIR
 
-echo $SCRIPT_DIR
 
 ########################
 #                      #
@@ -307,7 +306,7 @@ rm -rf /script
 cp -r /root/autoconf/script /script
 
 function usage() {
-	printf "\n\n CONFIGURATOR PROGRAM FOR THE VM \n\n"
+	printf "\n CONFIGURATOR PROGRAM FOR THE VM \n\n"
 	printf "\tsite_conf first_install                : set up vm after install\n"
 	printf "\tsite_conf change_ip [IP with mask]     : to change IP\n"
 	printf "\tsite_conf deploy                       : redeploy Website\n"
