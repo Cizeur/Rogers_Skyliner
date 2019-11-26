@@ -9,9 +9,6 @@ cd $SCRIPT_DIR
 #                      #
 ########################
 
-./extra_packages.sh  >> log_packages_install
-cp -r /root/autoconf/script /script
-
 refresh () {
 	USER_BASIC=$(eval getent passwd \
 		{$(awk '/^UID_MIN/ {print $2}' /etc/login.defs)..$(awk '/^UID_MAX/ {print $2}' /etc/login.defs)} \
@@ -28,6 +25,7 @@ refresh () {
 }
 
 make_templates() {
+	refresh
 	#clean up
 	rm -rf REPLACEMENTS
 	mkdir -p REPLACEMENTS
@@ -46,14 +44,13 @@ make_templates() {
 	sed -i "s#<WEBSITE>#$WEBSITE#g" ./REPLACEMENTS/$WEBSITE.conf
 }
 
-refresh
-make_templates
-
 ################################
 #    REDIRECTING ROOT MAIL     #
 ################################
 
-echo "root@localhost, $USER_BASIC@localhost" > /root/.forward
+mail_redirect() {
+	echo "root@localhost, $USER_BASIC@localhost" > /root/.forward
+}
 
 #######################
 #    INSTALL SUDO     #
@@ -182,7 +179,6 @@ crontab_set(){
 ## syslog provide needed for rsyslog
 ## rsyslog manages /var/logs files
 ## procps contain process commands  kill, pkill, ps sysctl,  top, uptime for example
-## dbus needed for systemctl and nginx 
 
 service_disable(){
 	systemctl mask apparmor
@@ -250,13 +246,13 @@ countdown() {
 first_install (){
 	countdown "20" 
 	echo "STARTING"
-	refresh
 	make_templates
+	echo "REDIRECTING ROOT EMAIL TO $USER_BASIC"
+	mail_redirect
 	echo "INSTALLING SUDO"
 	install_sudo	
 	echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
 	reset_interface
-	IP="$(hostname -I | awk '{print $1}')"
 	make_templates
 	echo "DISABLING SERVICES"
 	service_disable	
@@ -271,6 +267,7 @@ first_install (){
 	nginx_set
 	echo "SET UP CRONTAB"
 	crontab_set
+	/script/update.sh
 }
 
 #######################
@@ -292,6 +289,12 @@ change_ip() {
 #######################
 #    	PROGRAM       #
 #######################
+
+
+./extra_packages.sh  >> log_packages_install
+rm -rf /script
+cp -r /root/autoconf/script /script
+make_templates
 
 function usage() {
 	printf "\n\n CONFIGURATOR PROGRAM FOR THE VM \n\n"
