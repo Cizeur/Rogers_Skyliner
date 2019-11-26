@@ -226,6 +226,11 @@ nginx_set() {
 	systemctl restart nginx
 }
 
+###############################################################################
+###############################################################################
+###############################################################################
+
+
 #######################
 #    FIRST INSTALL    #
 #######################
@@ -267,4 +272,79 @@ first_install (){
 	echo "SET UP CRONTAB"
 	crontab_set
 }
-first_install
+
+#######################
+#    CHANGE IP        #
+#######################
+
+change_ip() {
+	echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
+	reset_interface
+	IP="$(hostname -I | awk '{print $1}')"
+	make_templates
+	echo "SET UP FAIL2BAN"
+	fail2ban_set
+	echo "SET UP NGINX"
+	nginx_set
+}
+
+
+#######################
+#    	PROGRAM       #
+#######################
+
+case $OPT in
+	first_install)
+		first_install
+		exit 0
+		;;
+	change_ip)
+		STATIC_IP=$2
+		if [ -z "$2" ]
+  		then
+    			echo "missing ip"
+			exit 1
+		fi
+
+
+		;;
+	-t)
+		timer=1
+		;;
+	-e)
+		no_gen=0
+		;;
+	-n)
+		shift
+		n_maps=$1
+		;;
+	-p)
+		shift
+		program=$1
+		;;
+	-m)
+		shift
+		map_folder=$1
+		;;
+	-g)
+		shift
+		generator_ex=$1
+		;;
+	-o)
+		shift
+		options=$1
+		;;
+	-po)
+		shift
+		prog_options=$1
+		;;
+	*)
+		usage
+		exit
+		;;
+	esac
+
+
+###############################################################################
+###############################################################################
+###############################################################################

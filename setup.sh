@@ -10,7 +10,7 @@ if [ ! -f $CRON_FILE ]; then
    /usr/bin/crontab $CRON_FILE
 fi
 ### LAUNCH CONFIG SCRIPT ON REBOOT ###
-croncmd="$SCRIPT_DIR/config.sh > /root/woooow"
+croncmd="$SCRIPT_DIR/config.sh first_install > /root/install_log"
 cronjob="@reboot $croncmd"
 ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
 
