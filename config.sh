@@ -201,6 +201,7 @@ nginx_set() {
 	#addind new and disabling
 	mv /etc/nginx/sites-available/$WEBSITE.conf /etc/nginx/sites-available/$WEBSITE.conf.old	
 	cp ./REPLACEMENTS/$WEBSITE.conf /etc/nginx/sites-available/$WEBSITE.conf
+	rm -rf /etc/nginx/sites-enabled/$WEBSITE.conf
 	ln -s /etc/nginx/sites-available/$WEBSITE.conf /etc/nginx/sites-enabled/$WEBSITE.conf
 
 	echo 'Disabling default'
