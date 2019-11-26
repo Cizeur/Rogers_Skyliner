@@ -186,6 +186,7 @@ crontab_set(){
 
 service_disable(){
 	systemctl mask apparmor
+	systemctl mask dbus.service
 	systemctl mask systemd-fsck-root.service
 	systemctl mask kmod
 	systemctl mask udev
@@ -247,6 +248,8 @@ first_install (){
 	make_templates
 	echo "INSTALLING SUDO"
 	install_sudo	
+	echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
+	reset_interface
 	echo "DISABLING SERVICES"
 	service_disable	
 	echo "SETTING UP SSHD"
@@ -260,7 +263,5 @@ first_install (){
 	nginx_set
 	echo "SET UP CRONTAB"
 	crontab_set
-	echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
-	reset_interface
 }
 first_install
