@@ -332,6 +332,7 @@ case $1 in
 		;;
 	deploy)
 		git pull
+		refresh
 		make_templates
 		echo "SET UP NGINX"
 		nginx_set
