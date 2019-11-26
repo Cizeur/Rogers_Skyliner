@@ -251,6 +251,7 @@ first_install (){
 	echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
 	reset_interface
 	IP="$(hostname -I | awk '{print $1}')"
+	make_templates
 	echo "DISABLING SERVICES"
 	service_disable	
 	echo "SETTING UP SSHD"
