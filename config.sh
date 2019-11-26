@@ -258,6 +258,8 @@ first_install (){
 	mail_redirect
 	echo "ADD SYMLINK TO CONFIG SCRIPT IN SBIN"
 	ln -s $SCRIPT_DIR/config.sh /usr/sbin/site_conf
+	echo "ADDING LOCALES"
+	cp -f ./templates/environment.TEMP /etc/environment
 	echo "INSTALLING SUDO"
 	install_sudo	
 	echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
