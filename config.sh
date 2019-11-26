@@ -255,6 +255,8 @@ first_install (){
 	make_templates
 	echo "REDIRECTING ROOT EMAIL TO $USER_BASIC"
 	mail_redirect
+	echo "ADD SYMLINK TO CONFIG SCRIPT IN SBIN"
+	ln -s $SCRIPT_DIR/config.sh /usr/sbin/site_conf
 	echo "INSTALLING SUDO"
 	install_sudo	
 	echo "RESETTING NETWORK INTERFACE $INTERFACE ADAPTER"
