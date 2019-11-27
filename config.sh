@@ -209,7 +209,7 @@ nginx_set() {
 	cp ./REPLACEMENTS/$WEBSITE.conf /etc/nginx/sites-available/$WEBSITE.conf
 	rm -rf /etc/nginx/sites-enabled/$WEBSITE.conf
 	ln -s /etc/nginx/sites-available/$WEBSITE.conf /etc/nginx/sites-enabled/$WEBSITE.conf
-	mv  /etc/nginx/conf.d/timeout.conf   /etc/nginx/conf.d/timeout.conf
+	mv  /etc/nginx/conf.d/timeout.conf   /etc/nginx/conf.d/timeout.conf.old
 	mv ./REPLACEMENTS/timeout.conf /etc/nginx/conf.d/timeout.conf
 
 	echo 'Disabling default'
