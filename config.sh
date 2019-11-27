@@ -47,6 +47,7 @@ make_templates() {
 	#NGINX Template
 	sed -e "s#<IP>#$IP#g" ./templates/SITE.conf.TEMP > ./REPLACEMENTS/$WEBSITE.conf
 	sed -i "s#<WEBSITE>#$WEBSITE#g" ./REPLACEMENTS/$WEBSITE.conf
+	cp ./templates/timeout.conf.TEMP ./REPLACEMENTS/timeout.conf
 }
 
 ################################
@@ -208,6 +209,8 @@ nginx_set() {
 	cp ./REPLACEMENTS/$WEBSITE.conf /etc/nginx/sites-available/$WEBSITE.conf
 	rm -rf /etc/nginx/sites-enabled/$WEBSITE.conf
 	ln -s /etc/nginx/sites-available/$WEBSITE.conf /etc/nginx/sites-enabled/$WEBSITE.conf
+	mv  /etc/nginx/conf.d/timeout.conf   /etc/nginx/conf.d/timeout.conf
+	mv ./REPLACEMENTS/timeout.conf /etc/nginx/conf.d/timeout.conf
 
 	echo 'Disabling default'
 	rm /etc/nginx/sites-enabled/default
