@@ -185,10 +185,10 @@ crontab_set(){
 ## syslog provide needed for rsyslog
 ## rsyslog manages /var/logs files
 ## procps contain process commands  kill, pkill, ps sysctl,  top, uptime for example
+##dbus needed to use systemctl through ssh
 
 service_disable(){
 	systemctl mask apparmor
-	systemctl mask dbus.service
 	systemctl mask systemd-fsck-root.service
 	systemctl mask kmod
 	systemctl mask udev
