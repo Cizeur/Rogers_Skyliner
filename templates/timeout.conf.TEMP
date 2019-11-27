@@ -1,0 +1,4 @@
+client_body_timeout 30;
+client_header_timeout 10;
+send_timeout 60;
+keepalive_requests 100;
