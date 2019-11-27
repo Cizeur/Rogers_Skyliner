@@ -196,6 +196,7 @@ service_disable(){
 	systemctl mask apt-daily.timer
 	systemctl mask logrotate.timer  
 	systemctl mask man-db.timer 
+	systemctl mask remote-fs.target 
 }
 
 #######################
